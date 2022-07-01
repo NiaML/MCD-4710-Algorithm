@@ -8,9 +8,9 @@ will then check your name, so your name acts as a failsafe.
 '''
 # Student details
 def details():
-    student_number = '' #write your student number as a string
-    student_email = '' + '@student.monash.edu' #write your student email
-    name = '' #write your name as it appears on Moodle
+    student_number = '33191654 ' #write your student number as a string
+    student_email = 'clam0049' + '@student.monash.edu' #write your student email
+    name = 'Chi Him Lam' #write your name as it appears on Moodle
     return str(student_number), student_email, name
 
 ###Task 1
@@ -24,7 +24,14 @@ def calculate(x,y,operator):
     15
     >>> calculate(3, 5, '/')
     0.6
-    """       
+    """    
+    if operator == '+':
+        return x + y
+    if operator == '-':
+        return x - y
+    if operator == '-':
+        return x - y
+
     pass
 
 
