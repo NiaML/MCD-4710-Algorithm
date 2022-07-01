@@ -1,4 +1,6 @@
 from random import random
+
+from numpy import true_divide
 '''
 DO NOT CHANGE THE NAME OF THIS FILE, or else the tester will not work. 
 The first function requires that you replace the given strings with
@@ -26,12 +28,13 @@ def calculate(x,y,operator):
     0.6
     """    
     if operator == '+':
-        return x + y
+        return (x + y)
     if operator == '-':
-        return x - y
-    if operator == '-':
-        return x - y
-
+        return (x - y)
+    if operator == 'x':
+        return (x * y)
+    if operator == '/':
+        return x/y
     pass
 
 
@@ -51,6 +54,16 @@ def is_leap_year(year):
     >>> is_leap_year(2100)
     False
     """
+    
+    if year % 4 == 0:
+        if year%100==0:
+            if year %400==0:
+                return True
+            return False
+        return True
+    elif year%4 !=0 or year<0:
+        return False
+    #return year%4==0 and (year%100!=0 or year%400==0)
     pass
 
 def leap_year_answer(year):
@@ -68,6 +81,18 @@ def leap_year_answer(year):
     >>> leap_year_answer(2100)
     'Year 2100 will not be a leap year'
     """
+    import datetime
+    
+    if is_leap_year(year):
+        if year<datetime.datetime.now().year:
+            return 'Year ' +str(year)+ ' was a leap year'
+        if year>=datetime.datetime.now().year:
+            return 'Year ' +str(year)+ ' will be a leap year'
+    elif not is_leap_year(year):
+        if year<datetime.datetime.now().year:
+            return 'Year ' +str(year)+ ' was not a leap year'
+        if year>=datetime.datetime.now().year:
+            return 'Year ' +str(year)+ ' will not be a leap year'
     pass
 
 ###Task 3
@@ -82,6 +107,11 @@ def next_triangular_number(num):
     >>> next_triangular_number(2000)
     2016
     """
+    trig_num = 0
+    for i in range(num):
+        while trig_num<num:
+            trig_num += i
+    return trig_num
     pass
 
 ###Task 4
@@ -96,6 +126,7 @@ def add(numbers):
     >>> add([-24, -25, -33, 32, -81, -58, 28, -4, -30, -69, 44, -41])
     -165
     """
+
     pass
 
 def flip(binary_string):
@@ -109,6 +140,13 @@ def flip(binary_string):
     >>> flip('001011111111')
     '110100000000'
     """
+    flipped = ''
+    for i in range(len(binary_string)):
+        if binary_string[i] == '0':
+            flipped += '1'
+        elif binary_string[i] == '1':
+            flipped += '0'
+    return flipped
     pass
 
 ###Task 5 - Extension (OPTIONAL)
