@@ -1,6 +1,4 @@
 from random import random
-
-from numpy import true_divide
 '''
 DO NOT CHANGE THE NAME OF THIS FILE, or else the tester will not work. 
 The first function requires that you replace the given strings with
@@ -109,8 +107,8 @@ def next_triangular_number(num):
     """
     trig_num = 0
     for i in range(num):
-        while trig_num<num:
-            trig_num += i
+        trig_num += i + 1
+            
     return trig_num
     pass
 
@@ -126,6 +124,7 @@ def add(numbers):
     >>> add([-24, -25, -33, 32, -81, -58, 28, -4, -30, -69, 44, -41])
     -165
     """
+    
 
     pass
 
