@@ -1,6 +1,4 @@
-from ctypes import sizeof
 from random import random
-from unittest import result
 '''
 DO NOT CHANGE THE NAME OF THIS FILE, or else the tester will not work. 
 The first function requires that you replace the given strings with
