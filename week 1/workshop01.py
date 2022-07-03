@@ -49,7 +49,7 @@ temp_c = temp_f + 3
 # NOTE: You must implement factoids so that it would work for any value
 #       assigned to name.
 
-name = 'Jane'
+name = 'Janet'
 factoids = name + ' has ' + str(len(name)) + '. It starts with ' + name[0] + ' and ends with '+ name[-1]
 
 # Task 5: Coin Flip (Extension task)
