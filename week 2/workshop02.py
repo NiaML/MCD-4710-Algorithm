@@ -1,4 +1,6 @@
+from ctypes import sizeof
 from random import random
+from unittest import result
 '''
 DO NOT CHANGE THE NAME OF THIS FILE, or else the tester will not work. 
 The first function requires that you replace the given strings with
@@ -53,15 +55,8 @@ def is_leap_year(year):
     False
     """
     
-    if year % 4 == 0:
-        if year%100==0:
-            if year %400==0:
-                return True
-            return False
-        return True
-    elif year%4 !=0 or year<0:
-        return False
-    #return year%4==0 and (year%100!=0 or year%400==0)
+    
+    return year%4==0 and (year%100!=0 or year%400==0)
     pass
 
 def leap_year_answer(year):
@@ -106,11 +101,17 @@ def next_triangular_number(num):
     2016
     """
     trig_num = 0
-    for i in range(num):
-        trig_num += i + 1
-            
+    next_triangular_number_temp=0
+    while num >= trig_num:
+        
+        trig_num += next_triangular_number_temp
+        next_triangular_number_temp += 1
+    del next_triangular_number_temp
+
     return trig_num
     pass
+            
+    
 
 ###Task 4
 def add(numbers):
@@ -125,6 +126,10 @@ def add(numbers):
     -165
     """
     
+    
+    
+    result = sum(numbers[1::2])
+    return result
 
     pass
 
