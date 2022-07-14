@@ -65,15 +65,19 @@ def complete(my_list):
     >>> complete([-5, 0, 5])
     [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
     """
-    temp_number = min(my_list)
-    missing_numbers = 0
-    completed_list = []
-    while temp_number <= max(my_list):
-        if temp_number not in my_list:
-            missing_numbers += 1 # count the missing numbers
-        completed_list.append(temp_number)
-        temp_number += 1
-    my_list= completed_list
+    
+    miss_counter = 0
+    i=0
+    while my_list[i] +1 < my_list[i+1] or my_list[i] +1 < max(my_list):
+        if my_list[i] +1 == my_list[i +1]:
+            i += 1
+        else:
+            my_list.insert(i+1, my_list[i]+1); miss_counter += 1 #inserts the missing number and increases the missing amount
+            
+    
+        i+=1 #increment i to avoid the same number being inserted twice
+        
+            
     return my_list
     pass
 
@@ -118,28 +122,28 @@ def remove_outliers(table):
 
 
 ###Task 5 - Extension (OPTIONAL)
-def primes_in_range(start, stop):
-    """
-    >>> primes_in_range(35, 100)
-    [37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
-    >>> primes_in_range(211, 263)
-    [211, 223, 227, 229, 233, 239, 241, 251, 257, 263]
-    >>> primes_in_range(35400, 35500)
-    [35401, 35407, 35419, 35423, 35437, 35447, 35449, 35461, 35491]
-    >>> primes_in_range(51854787, 51854830)
-    [51854801, 51854807, 51854809, 51854821, 51854827]
-    """
-    import math
-    primes = []
-    for i in range(start, stop):
-        for j in range(2, int(math.sqrt(stop))):
-            if i%j!=0:
-                primes.append(i)
-                break
+# def primes_in_range(start, stop):
+#     """
+#     >>> primes_in_range(35, 100)
+#     [37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+#     >>> primes_in_range(211, 263)
+#     [211, 223, 227, 229, 233, 239, 241, 251, 257, 263]
+#     >>> primes_in_range(35400, 35500)
+#     [35401, 35407, 35419, 35423, 35437, 35447, 35449, 35461, 35491]
+#     >>> primes_in_range(51854787, 51854830)
+#     [51854801, 51854807, 51854809, 51854821, 51854827]
+#     """
+#     # import math
+#     # primes = []
+#     # for i in range(start, stop):
+#     #     for j in range(2, int(math.sqrt(stop))):
+#     #         if i%j!=0:
+#     #             primes.append(i)
+#     #             break
                 
 
-    return primes
-    pass
+#     return primes
+#     pass
 
 
 if __name__ == "__main__":
