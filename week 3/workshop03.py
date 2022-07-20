@@ -66,20 +66,21 @@ def complete(my_list):
     [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
     """
     
-    miss_counter = 0
-    i=0
-    while my_list[i] +1 < my_list[i+1] or my_list[i] +1 < max(my_list):
-        if my_list[i] +1 == my_list[i +1]:
-            i += 1
-        else:
-            my_list.insert(i+1, my_list[i]+1); miss_counter += 1 #inserts the missing number and increases the missing amount
-            
-    
-        i+=1 #increment i to avoid the same number being inserted twice
+    temp_number = min(my_list)
+    missing_numbers = 0
+    completed_list = []
+    while temp_number <= max(my_list):
+        if temp_number not in my_list:
+            missing_numbers += 1 # count the missing numbers
+        completed_list.append(temp_number)
+        temp_number += 1
+    my_list= completed_list
+    return my_list
+        
         
             
-    return my_list
-    pass
+    
+    pass 
 
 ###Task 3
 def addition_table(numbers):

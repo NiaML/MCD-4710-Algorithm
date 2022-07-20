@@ -131,7 +131,7 @@ def map(function, seq):
     ans=[]
     for i in seq:
         ans.append(function(i))
-    return function
+    return ans
 
 def lim_range(start, stop, step=1):
     ans=[]
