@@ -16,18 +16,34 @@ def details():
 
 # Task 1
 def word_from_file(file):
-    # read the file
-    with open(file, 'r') as f:
-        words = f.read().split()
     
-    return words.split()[0]
+    f = open(file, 'r')
+    words = f.read().split()
+    
+    return words[0]
     pass
 
 def nested_int_list_from_file(file):
+    f = open(file, 'r')
+    
+    ans = []
+    
+    for line in f:
+        for i in line.split():
+            ans.append(int(i))
+
+
+    return ans
     pass
 
 # Task 2
 def degree(graph, vertex):
+    degree = 0
+    for i in range(len(graph[vertex])):
+        if graph[vertex][i] == 1:
+            degree += 1
+
+    return degree
     pass
 
 def is_path(graph, path):

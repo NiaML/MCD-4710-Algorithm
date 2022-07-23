@@ -7,6 +7,9 @@ will then check your name, so your name acts as a failsafe.
 '''
 
 # Student details
+from distutils.log import debug
+
+
 def details():
     student_number = '33191654' #write your student number as a string
     student_email = 'clam0049' + '@student.monash.edu' #write your student email
@@ -160,5 +163,6 @@ def set(lst):
         if i not in ans:
             ans.append(i)
     return ans
+
 
 
