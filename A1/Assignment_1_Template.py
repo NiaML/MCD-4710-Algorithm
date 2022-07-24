@@ -1,4 +1,7 @@
-# Template for Assignment 1 - T2 2022
+# Name: Chi Him Lam
+# Student ID: 33191654
+# Assignment 1 - T2 2022
+
 # Add your code below the test cases provided in each function
 # Task 1
 def read_data(filename):
