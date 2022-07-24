@@ -25,13 +25,13 @@ def word_from_file(file):
 
 def nested_int_list_from_file(file):
     f = open(file, 'r')
-    
     ans = []
     
     for line in f:
-        for i in line.split():
-            ans.append(int(i))
-
+            ans.append(line)
+    for len in range(len(ans)):
+        for wid in range(len(ans[len])):
+            ans[len][wid]=int(ans[len][wid])
 
     return ans
     pass
