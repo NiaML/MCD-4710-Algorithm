@@ -5,7 +5,6 @@ your personal details. It is important that you enter your student number
 and your student email correctly. If your number and email do not match we
 will then check your name, so your name acts as a failsafe.
 '''
-
 # Student details
 def details():
     student_number = '33191654' #write your student number as a string
@@ -18,21 +17,32 @@ def details():
 def word_from_file(file):
     
     f = open(file, 'r')
-    words = f.read().split()
-    
-    return words[0]
+    words = f.read().split() #  read the whole file and split the words as strings
+    f.close()
+    return words[0] # return the first word
     pass
 
 def nested_int_list_from_file(file):
-    f = open(file, 'r')
     ans = []
+    # safy guard if the file does not exist
+    import os
+    # get current path
+    path = os.path.join(os.getcwd()+'\\'+file)
+    if not os.path.exists(path):
+        return ans
+    f = open(file, 'r')
     
+    #appending elements
     for line in f:
-            ans.append(line)
-    for len in range(len(ans)):
-        for wid in range(len(ans[len])):
-            ans[len][wid]=int(ans[len][wid])
+        print(line)
+        line    = line.strip().split(',') # split the words
+        ans.append(line)            # append the words as strings
+    f.close()
 
+    for row in range(len(ans)):
+        for col in range(len(ans[row])):
+            # convert string to int
+            ans[row][col]   =   int(ans[row][col])
     return ans
     pass
 
@@ -47,6 +57,13 @@ def degree(graph, vertex):
     pass
 
 def is_path(graph, path):
+    ans = True # set ans as boolean type
+    
+    for i in range(len(path)-1):
+        if not graph[path[i]][path[i+1]]:
+            ans = False
+            return ans
+    return ans
     pass
 
 # Task 3
