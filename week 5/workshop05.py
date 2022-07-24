@@ -100,9 +100,50 @@ def print_as_grid(graph, n):
 
 
 def grid_graph(m, n):
+    ans = []
+    if m*n == 0:
+        return ans
+    elif m*n == 1:
+        return [[0]]
+    for i in range(m):
+        ans.append([])
+        for j in range(n):
+            ans[i].append(0)
+    return ans
     pass
 
 
 # Task 4
 def sort_table(table, col):
+    # # given algorithm
+    # def insert(k, lst):
+    #     temp = lst[k]
+    #     j = k-1
+    #     while j >= 0 and temp < lst[j]:
+    #         lst[j+1] = lst[j]
+    #         j -= 1
+    #     return lst
+    # def insertion_sort(lst):
+    #     for i in range(1, len(lst)):
+    #         lst = insert(i, lst)
+    #     return lst
+    # # modify the algorithm
+    # def insert(k, lst,col):
+    #     temp = lst[k][col]
+    #     j = k-1
+    #     while j >= 0 and temp < lst[j][col]:
+    #         lst[j+1][col] = lst[j][col]
+    #         j -= 1
+    #     return lst
+    # def insertion_sort(lst,col):
+    #     for i in range(1, len(lst)):
+    #         lst = insert(i, lst,col)
+    #     return lst
+    # # workflow
+    # return insertion_sort(table,col)
+    temp = 
+    
+
+
+
     pass
