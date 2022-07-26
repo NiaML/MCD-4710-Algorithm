@@ -93,7 +93,7 @@ def calculate_BMI(table):
         height  = table[row][4] / 100 # convert the height to meters
         BMI     = round(mass / (height ** 2), 1)
         table[row].append(BMI)
-    return table
+    
 
 # Task 4
 def categorise(table):
@@ -125,7 +125,7 @@ def categorise(table):
             table[row].append(categories['Normal'])
         elif BMI >= 30:
             table[row].append(categories['Obese'])
-    return table
+    
 
 # Task 5
 def get_BMI(table,name):
@@ -228,7 +228,7 @@ def extract_high_risk(table,filename):
         patient_BP      = get_BP(table,patient_name)
         patient_smoker  = is_smoker(table,patient_name)
         # test the conditions, convertible to nested if statements to avoid stacking in one line
-        if patient_BMI == categories['Obese'] and patient_BP[0] > 125 and patient_BP[1]>=85 and patient_smoker:
+        if patient_BMI == categories['Obese'] and (patient_BP[0] >= 125 or patient_BP[1]>=85) and patient_smoker:
             patient_info = ''
             for col in range(len(table[patient_row])):
                 patient_info += str(table[patient_row][col]) + ','
@@ -238,15 +238,7 @@ def extract_high_risk(table,filename):
         patient_row += 1
     file.close()
 
-patient_data = read_data('hospital_data.csv')
-lbs_to_kg(patient_data)
-calculate_BMI(patient_data)
-categorise(patient_data)
-extract_high_risk(patient_data,'high_risk_patients.csv')
-high_risk_table = read_data('high_risk_patients.csv') # read high-risk values (for testing)
-temp = high_risk_table[:2] # The first two rows of the high-risk records
-    # [['SMITH', 'M', 38.0, 79.8, 145.0, 1, 124.0, 93.0, 38.0, 'O'], ['WHITE', 'M', 39.0, 91.6, 152.0, 1, 130.0, 95.0, 39.6, 'O']]
-  
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod(verbose=True)

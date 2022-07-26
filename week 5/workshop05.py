@@ -141,7 +141,7 @@ def sort_table(table, col):
     #     return lst
     # # workflow
     # return insertion_sort(table,col)
-    temp = 
+    
     
 
 
