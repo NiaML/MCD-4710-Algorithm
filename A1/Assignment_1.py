@@ -220,6 +220,9 @@ def extract_high_risk(table,filename):
                 'Underweight':'U'
                 }
     file = open(filename, 'w')
+    # copy the header from the original table
+    with open('hospital_data.csv') as header:
+        file.write(header.readline())
     patient_row = 0
     while patient_row < len(table):
         # get all the data required for the high-risk patient
