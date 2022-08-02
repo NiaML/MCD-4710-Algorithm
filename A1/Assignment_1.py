@@ -1,8 +1,9 @@
 # Name: Chi Him Lam
 # Student ID: 33191654
+# Assignment 1 - T2 2022
+# Finished on 25/07/2022
+# Last modified on 27/07/2022
 
-# Template for Assignment 1 - T2 2022
-# Add your code below the test cases provided in each function
 # Task 1
 def read_data(filename):
     """
@@ -14,7 +15,6 @@ def read_data(filename):
     >>> patient_data[:3] # The first three rows of the table
     [['SMITH', 'M', 38.0, 176.0, 145.0, 1, 124.0, 93.0], ['JOHNSON', 'M', 43.0, 163.0, 146.0, 0, 109.0, 77.0], ['WILLIAMS', 'F', 38.0, 131.0, 147.0, 0, 125.0, 83.0]]
     """
-    # Add your code here
     # read data from the file and store at variable patient_data
     f = open(filename, 'r')
     patient_data = f.read().splitlines()
@@ -54,7 +54,6 @@ def lbs_to_kg(table):
     [['SMITH', 'M', 38.0, 79.8, 145.0, 1, 124.0, 93.0], ['JOHNSON', 'M', 43.0, 73.9, 146.0, 0, 109.0, 77.0], ['WILLIAMS', 'F', 38.0, 59.4, 147.0, 0, 125.0, 83.0]]
 
     """
-    # Add your code here
     # apply the scaling factor 1:0.4536 to the table
     lbs_to_kg_scale = 0.4536
     for row in range(len(table)):
@@ -77,7 +76,6 @@ def calculate_BMI(table):
     >>> patient_data[:3] # The first three rows of the modified table
     [['SMITH', 'M', 38.0, 79.8, 145.0, 1, 124.0, 93.0, 38.0], ['JOHNSON', 'M', 43.0, 73.9, 146.0, 0, 109.0, 77.0, 34.7], ['WILLIAMS', 'F', 38.0, 59.4, 147.0, 0, 125.0, 83.0, 27.5]]
     """
-    # Add your code here
     # the code below that is commented out is because it makes the function to be working exculsively fine in this scene
     # # safe check if the table has converted the weight to kg
     # temp_data = read_data('hospital_data.csv')
@@ -109,13 +107,12 @@ def categorise(table):
     >>> patient_data[:3] # The first three rows of the modified table
     [['SMITH', 'M', 38.0, 79.8, 145.0, 1, 124.0, 93.0, 38.0, 'O'], ['JOHNSON', 'M', 43.0, 73.9, 146.0, 0, 109.0, 77.0, 34.7, 'O'], ['WILLIAMS', 'F', 38.0, 59.4, 147.0, 0, 125.0, 83.0, 27.5, 'N']]
     """
-    # Add your code here
     # determine the category of the BMI value and add it to the end of each row in table
     # declare the categories
     categories = {  
                 'Obese':"O", 
                 'Normal':'N', 
-                'Underweight':'U'
+                'Underweight':'U',
                 }
     for row in range(len(table)):
         BMI = table[row][-1]
@@ -140,7 +137,6 @@ def get_BMI(table,name):
     >>> get_BMI(patient_data,'Johnson')
     34.7
     """
-    # Add your code here
     # find the row of the given patient
     # this method only display the first patient with the given name
     for row in range(len(table)):
@@ -163,7 +159,6 @@ def get_BP(table,name):
     >>> get_BP(patient_data,'Johnson')
     (109, 77)
     """
-    # Add your code here
     # reuse of the lookup method but return of different data
     for row in range(len(table)):
         if table[row][0] == name.upper(): # the given name list is in upper case
@@ -186,7 +181,6 @@ def is_smoker(table,name):
     >>> is_smoker(patient_data,'White')
     True
     """
-    # Add your code here
     # reuse of the lookup method but return of different data
     for row in range(len(table)):
         if table[row][0] == name.upper(): # the given name list is in upper case
@@ -212,7 +206,6 @@ def extract_high_risk(table,filename):
     [['SMITH', 'M', 38.0, 79.8, 145.0, 1, 124.0, 93.0, 38.0, 'O'], ['WHITE', 'M', 39.0, 91.6, 152.0, 1, 130.0, 95.0, 39.6, 'O']]
 
     """
-    # Add your code here
     # test all conditions and write the high-risk patient details to the given file
     categories = {  
                 'Obese':"O", 
@@ -222,19 +215,19 @@ def extract_high_risk(table,filename):
     file = open(filename, 'w')
     # copy the header from the original table
     with open('hospital_data.csv') as header:
-        file.write(header.readline())
+        file.write(header.readline().strip() + ', BMI, BMI category'+'\n')
     patient_row = 0
     while patient_row < len(table):
         # get all the data required for the high-risk patient
         patient_name    = table[patient_row][0]
         patient_BMI     = get_BMI(table,patient_name)
-        patient_BP      = get_BP(table,patient_name)
+        patient_BP_up,patient_BP_down      = get_BP(table,patient_name)
         patient_smoker  = is_smoker(table,patient_name)
         # test the conditions, convertible to nested if statements to avoid stacking in one line
-        if patient_BMI == categories['Obese'] and (patient_BP[0] >= 125 or patient_BP[1]>=85) and patient_smoker:
+        if patient_BMI == categories['Obese'] and (patient_BP_up >= 125 or patient_BP_down>=85) and patient_smoker:
             patient_info = ''
             for col in range(len(table[patient_row])):
-                patient_info += str(table[patient_row][col]) + ','
+                patient_info += str(table[patient_row][col]) + ","
             patient_info = patient_info[:-1] + '\n'
             # write the high-risk patient details to the given file
             file.write(patient_info)
