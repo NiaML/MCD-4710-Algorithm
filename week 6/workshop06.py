@@ -3,9 +3,9 @@ from math import pi
 
 # Student details
 def details():
-    student_number = '' #write your student number as a string
-    student_email = '' + '@student.monash.edu' #write your student email
-    name = '' #write your name as it appears on Moodle
+    student_number = '33191654' #write your student number as a string
+    student_email = 'clam0049' + '@student.monash.edu' #write your student email
+    name = 'Chi Him Lam' #write your name as it appears on Moodle
     return str(student_number), student_email, name
 
 
@@ -17,6 +17,7 @@ def swap(lst, a, b):
     >>> family
     ['Ransom', 'Linda', 'Joni', 'Walt']
     """
+    lst[a],lst[b] = lst[b],lst[a]
     pass
 
 
@@ -27,6 +28,12 @@ def find_min(lst, index):
     >>> find_min([1, 3, 5, 11, 7, 3, 2, 6, 2], 3)
     6
     """
+    i=index
+    while i <len(lst)-1:
+        if lst[i+1]<lst[i]:
+            index = lst[i+1]
+        i+=1
+    return index 
     pass
 
 
@@ -38,6 +45,7 @@ def selection_sort(lst):
     >>> outsiders
     ['Benoit', 'Edi', 'Frank', 'Marta']
     """
+    
     pass
         
 
@@ -52,6 +60,8 @@ def swap_down(lst, j):
     >>> shawshank
     ['Andy', 'Red', 'Brooks', 'Tommy']
     """
+    if j>0 and lst[j-1]<lst[j]:
+        lst[j-1],lst[j] = lst[j],lst[j-1]
     pass
 
 
@@ -62,6 +72,10 @@ def shuffle_down(lst, k):
     >>> club
     ['Ben', 'Beverly', 'Eddie', 'Bill', 'Richie', 'Stanley', 'Mike']
     """
+    
+    while k>0 and lst[k-1]<lst[k]:
+        swap_down(lst,k)
+        k-=1
     pass
 
 
@@ -90,6 +104,12 @@ def degree(graph, v):
     >>> degree(friends, 4)
     2
     """
+    degree = 0
+    for i in range(len(graph[v])):
+        if graph[v][i] == 1:
+            degree += 1
+
+    return degree
     pass
 
 
@@ -103,6 +123,11 @@ def shared_friends(graph, u, v):
     >>> shared_friends(friends, 0, 4)
     [2, 3]
     """
+    friends = []
+    for i in range(len(graph)):
+        if graph[u][i] == 1 and graph[v][i]==1:
+            friends.append(i)
+    return friends
     pass
 
 
@@ -118,6 +143,7 @@ def are_friends(graph, u, v):
     >>> are_friends(friends, 0, 1)
     True
     """
+    return graph[u][v]==1
     pass
 
 
@@ -133,6 +159,10 @@ def clique(graph, vertices):
     >>> clique(friends, [0, 1, 2])
     False
     """
+    for i in range(len(vertices)-1):
+        if not are_friends(graph,vertices[i],vertices[i+1]):
+            return False
+    return True
     pass
 
 
