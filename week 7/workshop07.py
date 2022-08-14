@@ -1,5 +1,4 @@
 from math import sqrt, pi
-from operator import index
 from sys import float_info
 import random # For task1c
 import timeit # For task1c
@@ -38,11 +37,21 @@ def merge(lst1, lst2):
     """
     index_1 = 0
     index_2 = 0
-    
+    res = []
     while index_1 < len(lst1) and index_2 < len(lst2):
-        lst1[index_1] <= lst2[index_2]
-        index_1+=1
-    return restlst[index_1:]+lst2[index_2:]
+        if lst1[index_1] <= lst2[index_2]:
+            res.append(lst1[index_1])
+            index_1+=1
+        else:
+            res.append(lst2[index_2])
+            index_2+=1
+    for i in (lst1[index_1:], lst2[index_2:]):
+        # join the rest from the lists
+        res.extend(i)
+            
+    
+    return res
+    
 
     pass
 
@@ -61,6 +70,14 @@ def merge_sort(lst):
     >>> merge_sort([10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0])
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     """
+    # perform merge sort
+    if len(lst) <= 1:
+        return lst
+    else:
+        mid = len(lst)//2
+        left = merge_sort(lst[:mid])
+        right = merge_sort(lst[mid:])
+        return merge(left, right)
     pass
 
 
@@ -74,6 +91,7 @@ def sort_analysis(func, n):
 
     ANALYSIS: <WRITE YOUR PARAGRAPH HERE>
     """
+    
     pass
 
 
