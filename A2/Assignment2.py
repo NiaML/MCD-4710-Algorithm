@@ -22,14 +22,14 @@ def init_board():
     [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]
     """
     # Add your code here
-    output = []
+    new_board = []
     row_size = 3
     col_size = 3
     for row in range(row_size):
-        output.append([])
+        new_board.append([])
         for col in range(col_size):
-            output[row].append('-')
-    return output
+            new_board[row].append('-')
+    return new_board
     # hard coded version below
     return  [['-', '-', '-'], 
              ['-', '-', '-'], 
@@ -56,14 +56,14 @@ def print_board(board):
     """
     # Add your code here
 
-    # hard coded version below
-    return f'-------------' + '\n' + \
-           f'| {board[0][0]} | {board[0][1]} | {board[0][2]} |' + '\n' + \
-           f'-------------' + '\n' + \
-           f'| {board[1][0]} | {board[1][1]} | {board[1][2]} |' + '\n' + \
-           f'-------------' + '\n' + \
-           f'| {board[2][0]} | {board[2][1]} | {board[2][2]} |' + '\n' + \
-           f'-------------'
+    # return the visual board
+    print(f"-------------\n" +\
+    f"| {board[0][0]} | {board[0][1]} | {board[0][2]} |\n"+\
+    f"-------------\n"+\
+    f"| {board[1][0]} | {board[1][1]} | {board[1][2]} |\n"+\
+    f"-------------\n"+\
+    f"| {board[2][0]} | {board[2][1]} | {board[2][2]} |\n"+\
+    f"-------------")
     
 
 
@@ -120,28 +120,42 @@ def player_won(board):
     """
     # Add your code here
     # X is player and O is computer
-    player_X = False
-    computer_O = False
+    player_win = False
+    computer_win = False
     # check rows
     for row in board:
-        if row[0] == row[1] == row[2] == 'X':
-            player_X    = True
-        elif row[0] == row[1] == row[2] == 'O':
-            computer_O  = True
+        if row[0] == row[1] == row[2] == player:
+            player_win    = True
+            break
+        elif row[0] == row[1] == row[2] == computer:
+            computer_win  = True
+            break
+
     # check columns
-    for col in range(len(board)):
-        if board[0][col] == board[1][col] == board[2][col] and board[0][col] == 'X':
-            player_X    = True
-        elif board[0][col] == board[1][col] == board[2][col] and board[0][col] == 'O':
-            computer_O  = True
+    if not player_win and not computer_win:
+        for col in range(len(board)):
+            if board[0][col] == board[1][col] == board[2][col] == player:
+                player_win    = True
+                break
+            elif board[0][col] == board[1][col] == board[2][col] == computer:
+                computer_win  = True
+                break
+
+    # check diagonals
+    if not player_win and not computer_win and not board[1][1] == '-':
+        if board[0][0] == board[1][1] == board[2][2] == player:
+            player_win    = True
+        elif board[0][0] == board[1][1] == board[2][2] == computer:
+            computer_win  = True
+
     # return value and statement
-    if player_X:
+    if player_win:
         print('Congrats!! You win!')
-    elif computer_O:
+        return True
+    elif computer_win:
         print('I win! Nice try!')
-    else:
         return False
-    return True
+
 
 
 # Task 5
@@ -160,7 +174,11 @@ def update_board(board,row,col,player):
     False
     """
     # Add your code here
-    # check if cell is empty
+    # check if cell is empty then update, else return False
+    if row < 1 or row > 3 or col < 1 or col > 3:
+        return False
+    row = row - 1
+    col = col - 1
     if board[row][col] == '-':
         board[row][col] = player
         return True
@@ -170,7 +188,9 @@ def update_board(board,row,col,player):
 
 # Task 6
 # Add additional functions as required
-                
+def check_box(board, row, col):
+    return board[row][col]
+
 def next_move(board,level):
     """
     Input: The current status of the board and the difficulty level
@@ -191,44 +211,81 @@ def next_move(board,level):
         # get random row and column
         row = random.randint(0,2)
         col = random.randint(0,2)
-        while update_board() == False:
+        while not update_board(board,row,col,computer):
             row = random.randint(0,2)
             col = random.randint(0,2)
         return (row,col)
         pass
     elif level == 'hard':
-        pass
-    return
+        row = int
+        col = int
+        if board[1][1] == computer:
+            pass
+            
+        update_board(board,row,col,computer)
+        return (row,col)
+
+
     
 
         
 # Task 7
+from time import sleep
 def play():
     """
     Test this function interactively by running - ie. by playing the game
     """
-    
+    clear()
     # Add your code here
+    level = 'easy' # for testing
+    # init game settings
     board = init_board()
-    level = input('Enter level (easy/hard): ')
-    print_board(board)
-    while not is_filled(board) and not player_won(board):
+    # level = input('Enter level (easy/hard): ')
+
+    # game loop
+    while not is_filled(board):
+        clear()
+        print_board(board)
         # player's turn
         row = int(input('Enter row: '))
         col = int(input('Enter column: '))
-        if update_board(board,row,col,'X'):
-            print_board(board)
-        else:
+        while not update_board(board,row,col,player):
             print('Invalid move!')
+            row = int(input('Enter row: '))
+            col = int(input('Enter column: '))
+        clear()
+        print_board(board)
+        # check game condition
+        if not player_won(board) == None:
+            break
+        elif is_filled(board):
+            print('It\'s a tie')
+            break
+        sleep(1)
         # computer's turn
-        if not is_filled(board) and not player_won(board):
-            row,col = next_move(board,level)
-            update_board(board,row,col,'O')
-            print_board(board)
+        next_move(board,level)
+        clear()
+        print_board(board)
+        if player_won(board) or is_filled(board):
+            break
+        sleep(1)
+        
 
 
+
+# extra function for clear screen
+import os
+def clear():
+    # for windows
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+
+    
                  
 if __name__ == "__main__":
     import doctest
     doctest.testmod(verbose=True)
     play()
+
