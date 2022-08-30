@@ -57,13 +57,13 @@ def print_board(board):
     # Add your code here
 
     # return the visual board
-    print(f"-------------\n" +\
-    f"| {board[0][0]} | {board[0][1]} | {board[0][2]} |\n"+\
-    f"-------------\n"+\
-    f"| {board[1][0]} | {board[1][1]} | {board[1][2]} |\n"+\
-    f"-------------\n"+\
-    f"| {board[2][0]} | {board[2][1]} | {board[2][2]} |\n"+\
-    f"-------------")
+    print(  f"-------------\n" +\
+            f"| {board[0][0]} | {board[0][1]} | {board[0][2]} |\n"+\
+            f"-------------\n"+\
+            f"| {board[1][0]} | {board[1][1]} | {board[1][2]} |\n"+\
+            f"-------------\n"+\
+            f"| {board[2][0]} | {board[2][1]} | {board[2][2]} |\n"+\
+            f"-------------")
     
 
 
@@ -143,18 +143,26 @@ def player_won(board):
 
     # check diagonals
     if not player_win and not computer_win and not board[1][1] == '-':
-        if board[0][0] == board[1][1] == board[2][2] == player:
-            player_win    = True
-        elif board[0][0] == board[1][1] == board[2][2] == computer:
-            computer_win  = True
+        if board[0][0] == board[1][1] == board[2][2]:
+            if board[0][0] == player:
+                player_win    = True
+            elif board[0][0] == computer:
+                computer_win  = True
+        elif board[0][2] == board[1][1] == board[2][0]:
+            if board[0][2] == player:
+                player_win    = True
+            elif board[0][2] == computer:
+                computer_win  = True
+        
 
-    # return value and statement
+    # print statment and return value
     if player_win:
         print('Congrats!! You win!')
         return True
     elif computer_win:
         print('I win! Nice try!')
-        return False
+        return True
+    return False
 
 
 
@@ -175,14 +183,13 @@ def update_board(board,row,col,player):
     """
     # Add your code here
     # check if cell is empty then update, else return False
-    if row < 1 or row > 3 or col < 1 or col > 3:
+    if row < 0 or row > 2 or col < 0 or col > 2:
         return False
-    row = row - 1
-    col = col - 1
-    if board[row][col] == '-':
-        board[row][col] = player
-        return True
-    return False
+    
+    if board[row][col] == player or board[row][col] == computer:
+        return False
+    board[row][col] = player
+    return True
 
     
 
@@ -215,12 +222,16 @@ def next_move(board,level):
             row = random.randint(0,2)
             col = random.randint(0,2)
         return (row,col)
-        pass
+
+    # hard level
     elif level == 'hard':
-        row = int
-        col = int
-        if board[1][1] == computer:
-            pass
+        row = 0
+        col = 0
+        # two in a row
+        if board[1][1] == board[0][0] and check_box(board,2,2) == '-':
+            row = 2
+            col = 2
+
             
         update_board(board,row,col,computer)
         return (row,col)
@@ -237,36 +248,46 @@ def play():
     """
     clear()
     # Add your code here
-    level = 'easy' # for testing
     # init game settings
     board = init_board()
-    # level = input('Enter level (easy/hard): ')
+    level = input('Enter level (easy/hard): ')
 
     # game loop
     while not is_filled(board):
         clear()
         print_board(board)
+
         # player's turn
+        print('Your turn (input 1 ~ 3)')
         row = int(input('Enter row: '))
         col = int(input('Enter column: '))
         while not update_board(board,row,col,player):
-            print('Invalid move!')
+            clear()
+            print_board(board)
+            print('Invalid move! Try again using 1 ~ 3')
             row = int(input('Enter row: '))
             col = int(input('Enter column: '))
         clear()
         print_board(board)
+
         # check game condition
-        if not player_won(board) == None:
+        if player_won(board):
             break
         elif is_filled(board):
-            print('It\'s a tie')
+            print("It's a tie")
             break
         sleep(1)
+
         # computer's turn
         next_move(board,level)
         clear()
         print_board(board)
-        if player_won(board) or is_filled(board):
+        
+        # check game condition
+        if player_won(board):
+            break
+        elif is_filled(board):
+            print("It's a tie")
             break
         sleep(1)
         
