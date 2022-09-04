@@ -35,8 +35,6 @@ def init_board():
              ['-', '-', '-'], 
              ['-', '-', '-']]
 
-
-
 # Task 2
 def print_board(board):
     """
@@ -65,8 +63,6 @@ def print_board(board):
             f"| {board[2][0]} | {board[2][1]} | {board[2][2]} |\n"+\
             f"-------------")
     
-
-
 # Task 3
 def is_filled(board):
     """
@@ -88,11 +84,9 @@ def is_filled(board):
     # if any cell is '-', then board is not filled
     for row in board:
         for col in row:
-            if col == '-':
+            if not col == computer and not col == player:
                 return False
     return True
-
-    
 
 # Task 4
 # Add additional functions as required
@@ -118,6 +112,53 @@ def player_won(board):
     >>> player_won(test_board)
     False
     """
+    # Add your code here
+    player_win = False
+    computer_win = False
+
+    # check rows
+    for row in board:
+        if row[0] == row[1] == row[2] == player:
+            player_win    = True
+            break
+        elif row[0] == row[1] == row[2] == computer:
+            computer_win  = True
+            break
+
+    # check columns
+    if not player_win and not computer_win:
+        for col in range(len(board)):
+            if board[0][col] == board[1][col] == board[2][col] == player:
+                player_win    = True
+                break
+            elif board[0][col] == board[1][col] == board[2][col] == computer:
+                computer_win  = True
+                break
+
+    # check diagonals
+    if not player_win and not computer_win and not board[1][1] == '-':
+        if board[0][0] == board[1][1] == board[2][2]:
+            if board[0][0] == player:
+                player_win    = True
+            elif board[0][0] == computer:
+                computer_win  = True
+        elif board[0][2] == board[1][1] == board[2][0]:
+            if board[0][2] == player:
+                player_win    = True
+            elif board[0][2] == computer:
+                computer_win  = True
+        
+    # print statment and return value
+    if player_win:
+        print('Congrats!! You win!')
+        return True
+    elif computer_win:
+        print('I win! Nice try!')
+        return True
+    return False
+
+# copied from Task 4 but without print statements
+def test_won(board):
     # Add your code here
     # X is player and O is computer
     player_win = False
@@ -154,24 +195,18 @@ def player_won(board):
             elif board[0][2] == computer:
                 computer_win  = True
         
-
     # print statment and return value
     if player_win:
-        print('Congrats!! You win!')
         return True
     elif computer_win:
-        print('I win! Nice try!')
         return True
     return False
-
-
 
 # Task 5
 def update_board(board,row,col,player):
     """
     Input: The current status of the board, the row, column and the player (‘X’ or ‘O’) for the next move. 
     Output: True if the board is successfully updated, False otherwise.
-
 
     For example: 
     >>> test_board = [['X','O','-'],['-','X','-'],['-','O','-']]
@@ -186,17 +221,29 @@ def update_board(board,row,col,player):
     if row < 0 or row > 2 or col < 0 or col > 2:
         return False
     
-    if board[row][col] == player or board[row][col] == computer:
+    if board[row][col] == computer or board[row][col] == player:
         return False
     board[row][col] = player
     return True
 
-    
-
 # Task 6
 # Add additional functions as required
-def check_box(board, row, col):
-    return board[row][col]
+def valid_move(board,row,col):
+    return not board[row][col] == computer and not board[row][col] == player
+
+def random_move(board):
+    row_index = random.randint(0,2)
+    col_index = random.randint(0,2)
+    while not update_board(board,row_index,col_index,computer):
+        row_index = random.randint(0,2)
+        col_index = random.randint(0,2)
+    return (row_index,col_index)
+
+def getCopy(board):
+    copy = []
+    for row in board:
+        copy.append(row.copy())
+    return copy
 
 def next_move(board,level):
     """
@@ -216,55 +263,171 @@ def next_move(board,level):
     # easy level
     if level == 'easy':
         # get random row and column
-        row = random.randint(0,2)
-        col = random.randint(0,2)
-        while not update_board(board,row,col,computer):
-            row = random.randint(0,2)
-            col = random.randint(0,2)
-        return (row,col)
+        return random_move(board)
 
     # hard level
     elif level == 'hard':
-        row = 0
-        col = 0
-        # two in a row
-        if board[1][1] == board[0][0] and check_box(board,2,2) == '-':
-            row = 2
-            col = 2
+        # for computer win condition
+        for i in range(len(board)):
+            for j in range(len(board[i])):
+                copy = getCopy(board)
+                if update_board(copy, i, j, computer):
+                    if test_won(copy):
+                        update_board(board, i, j, computer)
+                        return (i,j)
 
-            
-        update_board(board,row,col,computer)
-        return (row,col)
+        # for blocking user win condition (basically a copy of above)
+        for i in range(len(board)):
+            for j in range(len(board[i])):
+                copy = getCopy(board)
+                if update_board(copy, i, j, player):
+                    if test_won(copy):
+                        update_board(board, i, j, computer)
+                        return (i,j)
 
+        # placing the computer's move corresponding to the its existing moves
+        valid_moves = []
+        # center
+        if board[1][1] == computer:
+            for i in range(3):
+                for j in range(3):
+                    if valid_move(board,i,j):
+                        valid_moves.append((i,j))
 
-    
+        # top left
+        if board[0][0] == computer:
+            if valid_move(board,0,1):
+                valid_moves.append((0,1))
+            if valid_move(board,0,2):
+                valid_moves.append((0,2))
+            if valid_move(board,1,0):
+                valid_moves.append((1,0))
+            if valid_move(board,1,1):
+                valid_moves.append((1,1))
+            if valid_move(board,2,0):
+                valid_moves.append((2,0))
+            if valid_move(board,2,2):
+                valid_moves.append((2,2))
+        # top right
+        if board[0][2] == computer:
+            if valid_move(board,0,0):
+                valid_moves.append((0,0))
+            if valid_move(board,0,1):
+                valid_moves.append((0,1))
+            if valid_move(board,1,1):
+                valid_moves.append((1,1))
+            if valid_move(board,1,2):
+                valid_moves.append((1,2))
+            if valid_move(board,2,0):
+                valid_moves.append((2,0))
+            if valid_move(board,2,2):
+                valid_moves.append((2,2))
+        # bottom left
+        if board[2][0] == computer:
+            if valid_move(board,0,0):
+                valid_moves.append((0,0))
+            if valid_move(board,0,2):
+                valid_moves.append((0,2))
+            if valid_move(board,1,0):
+                valid_moves.append((1,0))
+            if valid_move(board,1,1):
+                valid_moves.append((1,1))
+            if valid_move(board,2,1):
+                valid_moves.append((2,1))
+            if valid_move(board,2,2):
+                valid_moves.append((2,2))
+        # bottom right
+        if board[2][2] == computer:
+            if valid_move(board,0,0):
+                valid_moves.append((0,0))
+            if valid_move(board,0,2):
+                valid_moves.append((0,2))
+            if valid_move(board,1,1):
+                valid_moves.append((1,1))
+            if valid_move(board,1,2):
+                valid_moves.append((1,2))
+            if valid_move(board,2,0):
+                valid_moves.append((2,0))
+            if valid_move(board,2,1):
+                valid_moves.append((2,1))
+        # top middle
+        if board[0][1] == computer:
+            if valid_move(board,0,0):
+                valid_moves.append((0,0))
+            if valid_move(board,0,2):
+                valid_moves.append((0,2))
+            if valid_move(board,1,1):
+                valid_moves.append((1,1))
+            if valid_move(board,2,1):
+                valid_moves.append((2,1))
+        # bottom middle
+        if board[2][1] == computer:
+            if valid_move(board,0,1):
+                valid_moves.append((0,1))
+            if valid_move(board,1,1):
+                valid_moves.append((1,1))
+            if valid_move(board,2,0):
+                valid_moves.append((2,0))
+            if valid_move(board,2,2):
+                valid_moves.append((2,2))
+        # left middle
+        if board[1][0] == computer:
+            if valid_move(board,0,0):
+                valid_moves.append((0,0))
+            if valid_move(board,1,1):
+                valid_moves.append((1,1))
+            if valid_move(board,2,0):
+                valid_moves.append((2,0))
+            if valid_move(board,1,2):
+                valid_moves.append((1,2))
+        # right middle
+        if board[1][2] == computer:
+            if valid_move(board,0,2):
+                valid_moves.append((0,2))
+            if valid_move(board,1,0):
+                valid_moves.append((1,0))
+            if valid_move(board,1,1):
+                valid_moves.append((1,1))
+            if valid_move(board,2,2):
+                valid_moves.append((2,2))
 
-        
+        # pick a random move from the valid moves
+        if len(valid_moves) > 0:
+            pick = random.choice(valid_moves)
+            while not update_board(board,pick[0],pick[1],computer):
+                pick = random.choice(valid_moves)
+        # no computer's move on the board
+        elif len(valid_moves) == 0:
+            return random_move(board)
+
 # Task 7
 from time import sleep
 def play():
     """
     Test this function interactively by running - ie. by playing the game
     """
-    clear()
     # Add your code here
+    clear()
     # init game settings
+    print("Welcome to PVE Tic-Tac-Toe!")
     board = init_board()
-    level = input('Enter level (easy/hard): ')
-
+    level = input('Enter level (easy/hard),\nany choice other than these two will result in hard level:\n')
+    if level != 'easy' and level != 'hard':
+        level = 'hard'
+        
     # game loop
     while not is_filled(board):
         clear()
         print_board(board)
 
         # player's turn
-        print('Your turn (input 1 ~ 3)')
+        print('Your turn (input 0 ~ 2)')
         row = int(input('Enter row: '))
         col = int(input('Enter column: '))
         while not update_board(board,row,col,player):
             clear()
             print_board(board)
-            print('Invalid move! Try again using 1 ~ 3')
+            print('Invalid move! Try again using 0 ~ 2')
             row = int(input('Enter row: '))
             col = int(input('Enter column: '))
         clear()
